@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { API } from "aws-amplify";
+
+import { s3Upload } from "../libs/awsLib";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
-import "./NewNote.css";
+import "./NewOrder.css";
 
-export default class NewNote extends Component {
+export default class NewOrder extends Component {
   constructor(props) {
     super(props);
 
@@ -42,11 +45,30 @@ export default class NewNote extends Component {
     }
 
     this.setState({ isLoading: true });
+
+    try {
+      const attachment = this.file ? await s3Upload(this.file) : null;
+
+      await this.createOrder({
+        attachment,
+        content: this.state.content
+      });
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      this.setState({ isLoading: false });
+    }
   };
+
+  createOrder(order) {
+    return API.post("orders", "/orders", {
+      body: order
+    });
+  }
 
   render() {
     return (
-      <div className="NewNote">
+      <div className="NewOrder">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="content">
             <FormControl

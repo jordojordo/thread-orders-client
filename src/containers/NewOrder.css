@@ -1,0 +1,8 @@
+.NewOrder form {
+  padding-bottom: 15px;
+}
+
+.NewOrder form textarea {
+  height: 300px;
+  font-size: 24px;
+}
