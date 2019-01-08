@@ -15,15 +15,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "yarn run build",
+    "deploy": "aws s3 sync build/ s3://thread-orders-client --delete",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id ELHBFEJPQ5AIR --paths '/*' && aws cloudfront create-invalidation --distribution-id E14HCLU0H2E5KS --paths '/*'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
