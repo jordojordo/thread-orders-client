@@ -17,7 +17,14 @@ export default class Orders extends Component {
       isLoading: null,
       isDeleting: null,
       order: null,
+      customerOrder: "",
       content: "",
+      dateReceived: "",
+      dateCompleted: "",
+      delivery: "",
+      initials: "",
+      invoiceNumber: "",
+      notes: "",
       attachmentURL: null
     };
   }
@@ -26,7 +33,18 @@ export default class Orders extends Component {
     try {
       let attachmentURL;
       const order = await this.getOrder();
-      const { content, attachment } = order;
+      console.log(order);
+      const {
+        content,
+        dateReceived,
+        dateCompleted,
+        customerOrder,
+        delivery,
+        initials,
+        invoiceNumber,
+        notes,
+        attachment
+      } = order;
 
       if (attachment) {
         attachmentURL = await Storage.vault.get(attachment);
@@ -35,6 +53,13 @@ export default class Orders extends Component {
       this.setState({
         order,
         content,
+        dateReceived,
+        dateCompleted,
+        customerOrder,
+        delivery,
+        initials,
+        invoiceNumber,
+        notes,
         attachmentURL
       });
     } catch (e) {
@@ -92,6 +117,13 @@ export default class Orders extends Component {
 
       await this.saveOrder({
         content: this.state.content,
+        dateReceived: this.state.dateReceived,
+        dateCompleted: this.state.dateCompleted,
+        customerOrder: this.state.customerOrder,
+        delivery: this.state.delivery,
+        initials: this.state.initials,
+        invoiceNumber: this.state.invoiceNumber,
+        notes: this.state.notes,
         attachment: attachment || this.state.order.attachment
       });
       this.props.history.push("/");
@@ -133,26 +165,81 @@ export default class Orders extends Component {
         {this.state.order && (
           <form onSubmit={this.handleSubmit}>
             <FormGroup controlId="content">
+              <ControlLabel>Customer</ControlLabel>
               <FormControl
                 onChange={this.handleChange}
                 value={this.state.content}
+                placeholder="Thread Coffee"
+                bsSize="large"
+              />
+            </FormGroup>
+            <div className="date-container">
+              <FormGroup controlId="dateReceived">
+                <ControlLabel>Date Received</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.dateReceived}
+                  type="date"
+                  className="date-area"
+                />
+              </FormGroup>
+              <FormGroup controlId="dateCompleted">
+                <ControlLabel>Date Completed</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.dateCompleted}
+                  type="date"
+                  className="date-area"
+                />
+              </FormGroup>
+            </div>
+            <FormGroup controlId="customerOrder">
+              <ControlLabel>Order</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.customerOrder}
+                placeholder="10 lbs - May '68"
+                bsSize="large"
+              />
+            </FormGroup>
+            <FormGroup controlId="delivery">
+              <ControlLabel>Delivery Type</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.delivery}
+                placeholder="Pick Up"
+                bsSize="large"
+              />
+            </FormGroup>
+            <div className="date-container">
+              <FormGroup controlId="invoiceNumber">
+                <ControlLabel>Invoice Number</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.invoiceNumber}
+                  placeholder="1156"
+                  bsSize="large"
+                />
+              </FormGroup>
+              <FormGroup controlId="initials">
+                <ControlLabel>Employee Initials</ControlLabel>
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.initials}
+                  placeholder="JRL"
+                  bsSize="large"
+                />
+              </FormGroup>
+            </div>
+            <FormGroup controlId="notes">
+              <ControlLabel>Notes</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.notes}
+                placeholder="Ground course..."
                 componentClass="textarea"
               />
             </FormGroup>
-            {this.state.order.attachment && (
-              <FormGroup>
-                <ControlLabel>Attachment</ControlLabel>
-                <FormControl.Static>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={this.state.attachmentURL}
-                  >
-                    {this.formatFilename(this.state.order.attachment)}
-                  </a>
-                </FormControl.Static>
-              </FormGroup>
-            )}
             <FormGroup controlId="file">
               {!this.state.order.attachment && (
                 <ControlLabel>Attachment</ControlLabel>

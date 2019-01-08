@@ -15,7 +15,14 @@ export default class NewOrder extends Component {
 
     this.state = {
       isLoading: null,
-      content: ""
+      customerOrder: "",
+      content: "",
+      dateReceived: "",
+      dateCompleted: "",
+      delivery: "",
+      initials: "",
+      invoiceNumber: "",
+      notes: ""
     };
   }
 
@@ -51,7 +58,14 @@ export default class NewOrder extends Component {
 
       await this.createOrder({
         attachment,
-        content: this.state.content
+        customerOrder: this.state.customerOrder,
+        content: this.state.content,
+        dateReceived: this.state.dateReceived,
+        dateCompleted: this.state.dateCompleted,
+        delivery: this.state.delivery,
+        initials: this.state.initials,
+        invoiceNumber: this.state.invoiceNumber,
+        notes: this.state.notes
       });
       this.props.history.push("/");
     } catch (e) {
@@ -61,6 +75,7 @@ export default class NewOrder extends Component {
   };
 
   createOrder(order) {
+    console.log(order);
     return API.post("orders", "/orders", {
       body: order
     });
@@ -71,9 +86,79 @@ export default class NewOrder extends Component {
       <div className="NewOrder">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="content">
+            <ControlLabel>Customer</ControlLabel>
             <FormControl
               onChange={this.handleChange}
               value={this.state.content}
+              placeholder="Thread Coffee"
+              bsSize="large"
+            />
+          </FormGroup>
+          <div className="date-container">
+            <FormGroup controlId="dateReceived">
+              <ControlLabel>Date Received</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.dateReceived}
+                type="date"
+                className="date-area"
+              />
+            </FormGroup>
+            <FormGroup controlId="dateCompleted">
+              <ControlLabel>Date Completed</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.dateCompleted}
+                type="date"
+                className="date-area"
+              />
+            </FormGroup>
+          </div>
+          <FormGroup controlId="customerOrder">
+            <ControlLabel>Order</ControlLabel>
+            <FormControl
+              onChange={this.handleChange}
+              value={this.state.customerOrder}
+              placeholder="10 lbs - May '68"
+              bsSize="large"
+            />
+          </FormGroup>
+          <FormGroup controlId="delivery">
+            <ControlLabel>Delivery Type</ControlLabel>
+            <FormControl
+              onChange={this.handleChange}
+              value={this.state.delivery}
+              placeholder="Pick Up"
+              bsSize="large"
+            />
+          </FormGroup>
+          <div className="date-container">
+            <FormGroup controlId="invoiceNumber">
+              <ControlLabel>Invoice Number</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.invoiceNumber}
+                placeholder="1156"
+                bsSize="large"
+              />
+            </FormGroup>
+            <FormGroup controlId="initials">
+              <ControlLabel>Employee Initials</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.initials}
+                placeholder="JRL"
+                bsSize="large"
+              />
+            </FormGroup>
+          </div>
+
+          <FormGroup controlId="notes">
+            <ControlLabel>Notes</ControlLabel>
+            <FormControl
+              onChange={this.handleChange}
+              value={this.state.notes}
+              placeholder="Ground course..."
               componentClass="textarea"
             />
           </FormGroup>

@@ -3,6 +3,15 @@
 }
 
 .NewOrder form textarea {
-  height: 300px;
-  font-size: 24px;
+  height: 100px;
+  font-size: 20px;
+}
+
+.date-area {
+	height: 50px;
+}
+
+.date-container {
+	display: flex;
+	justify-content: space-evenly;
 }
