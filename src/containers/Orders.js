@@ -167,6 +167,7 @@ export default class Orders extends Component {
             <FormGroup controlId="content">
               <ControlLabel>Customer</ControlLabel>
               <FormControl
+                required="true"
                 onChange={this.handleChange}
                 value={this.state.content}
                 placeholder="Thread Coffee"
@@ -177,6 +178,7 @@ export default class Orders extends Component {
               <FormGroup controlId="dateReceived">
                 <ControlLabel>Date Received</ControlLabel>
                 <FormControl
+                  required="true"
                   onChange={this.handleChange}
                   value={this.state.dateReceived}
                   type="date"
@@ -196,6 +198,7 @@ export default class Orders extends Component {
             <FormGroup controlId="customerOrder">
               <ControlLabel>Order</ControlLabel>
               <FormControl
+                required="true"
                 onChange={this.handleChange}
                 value={this.state.customerOrder}
                 placeholder="10 lbs - May '68"
