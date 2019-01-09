@@ -61,11 +61,11 @@ export default class NewOrder extends Component {
         customerOrder: this.state.customerOrder,
         content: this.state.content,
         dateReceived: this.state.dateReceived,
-        dateCompleted: this.state.dateCompleted,
-        delivery: this.state.delivery,
+        dateCompleted: this.state.dateCompleted || null,
+        delivery: this.state.delivery || null,
         initials: this.state.initials,
-        invoiceNumber: this.state.invoiceNumber,
-        notes: this.state.notes
+        invoiceNumber: this.state.invoiceNumber || null,
+        notes: this.state.notes || null
       });
       this.props.history.push("/");
     } catch (e) {
@@ -88,6 +88,7 @@ export default class NewOrder extends Component {
           <FormGroup controlId="content">
             <ControlLabel>Customer</ControlLabel>
             <FormControl
+              required="true"
               onChange={this.handleChange}
               value={this.state.content}
               placeholder="Thread Coffee"
@@ -98,6 +99,7 @@ export default class NewOrder extends Component {
             <FormGroup controlId="dateReceived">
               <ControlLabel>Date Received</ControlLabel>
               <FormControl
+                required="true"
                 onChange={this.handleChange}
                 value={this.state.dateReceived}
                 type="date"
@@ -117,6 +119,7 @@ export default class NewOrder extends Component {
           <FormGroup controlId="customerOrder">
             <ControlLabel>Order</ControlLabel>
             <FormControl
+              required="true"
               onChange={this.handleChange}
               value={this.state.customerOrder}
               placeholder="10 lbs - May '68"
@@ -145,6 +148,7 @@ export default class NewOrder extends Component {
             <FormGroup controlId="initials">
               <ControlLabel>Employee Initials</ControlLabel>
               <FormControl
+                required="true"
                 onChange={this.handleChange}
                 value={this.state.initials}
                 placeholder="JRL"

@@ -43,7 +43,15 @@ export default class Home extends Component {
           to={`/orders/${order.userOrders}`}
         >
           <ListGroupItem header={order.content.trim().split("\n")[0]}>
-            {"Created: " + new Date(order.createdAt).toLocaleString()}
+            <ListGroup>{"\n"}</ListGroup>
+            {"Order: " + order.customerOrder}
+            {" | Date Received: " + order.dateReceived}
+            <ListGroup>{"\n"}</ListGroup>
+            {order.dateCompleted ? (
+              <ListGroupItem bsStyle="success">
+                {"Date Completed: " + order.dateCompleted}
+              </ListGroupItem>
+            ) : null}
           </ListGroupItem>
         </LinkContainer>
       ) : (
