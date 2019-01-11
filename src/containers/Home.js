@@ -6,6 +6,13 @@ import { API } from "aws-amplify";
 
 import "./Home.css";
 
+const getMonday = d => {
+  d = new Date(d);
+  let day = d.getDay(),
+    diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.setDate(diff));
+};
+
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +43,7 @@ export default class Home extends Component {
   }
 
   renderOrdersList(orders) {
+    console.log(getMonday(new Date()));
     return [{}].concat(orders).map((order, i) =>
       i !== 0 ? (
         <LinkContainer
@@ -43,12 +51,10 @@ export default class Home extends Component {
           to={`/orders/${order.userOrders}`}
         >
           <ListGroupItem header={order.content.trim().split("\n")[0]}>
-            <ListGroup>{"\n"}</ListGroup>
             {"Order: " + order.customerOrder}
             {" | Date Received: " + order.dateReceived}
-            <ListGroup>{"\n"}</ListGroup>
             {order.dateCompleted ? (
-              <ListGroupItem bsStyle="success">
+              <ListGroupItem bsStyle="success" className={"completedContainer"}>
                 {"Date Completed: " + order.dateCompleted}
               </ListGroupItem>
             ) : null}

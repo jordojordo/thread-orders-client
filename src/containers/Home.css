@@ -30,3 +30,7 @@
 .Home .lander div a:first-child {
   margin-right: 20px;
 }
+
+.completedContainer {
+  margin-top: 10px;
+}

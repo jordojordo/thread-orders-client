@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
 import { API } from "aws-amplify";
 
 import { s3Upload } from "../libs/awsLib";
@@ -15,7 +15,7 @@ export default class NewOrder extends Component {
 
     this.state = {
       isLoading: null,
-      customerOrder: "",
+      customerOrder: [{ name: "" }],
       content: "",
       dateReceived: "",
       dateCompleted: "",
@@ -31,9 +31,17 @@ export default class NewOrder extends Component {
   }
 
   handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
+    if (["name form-control input-lg"].includes(event.target.className)) {
+      let customerOrder = [...this.state.customerOrder];
+      customerOrder[event.target.dataset.id] = event.target.value;
+      this.setState({ customerOrder }, () =>
+        console.log(this.state.customerOrder)
+      );
+    } else {
+      this.setState({
+        [event.target.id]: event.target.value
+      });
+    }
   };
 
   handleFileChange = event => {
@@ -74,6 +82,12 @@ export default class NewOrder extends Component {
     }
   };
 
+  addCustomerOrder = e => {
+    this.setState(prevState => ({
+      customerOrder: [...prevState.customerOrder, { name: "" }]
+    }));
+  };
+
   createOrder(order) {
     console.log(order);
     return API.post("orders", "/orders", {
@@ -82,13 +96,14 @@ export default class NewOrder extends Component {
   }
 
   render() {
+    let { customerOrder } = this.state;
     return (
       <div className="NewOrder">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="content">
             <ControlLabel>Customer</ControlLabel>
             <FormControl
-              required="true"
+              required={true}
               onChange={this.handleChange}
               value={this.state.content}
               placeholder="Thread Coffee"
@@ -99,7 +114,7 @@ export default class NewOrder extends Component {
             <FormGroup controlId="dateReceived">
               <ControlLabel>Date Received</ControlLabel>
               <FormControl
-                required="true"
+                required={true}
                 onChange={this.handleChange}
                 value={this.state.dateReceived}
                 type="date"
@@ -116,16 +131,30 @@ export default class NewOrder extends Component {
               />
             </FormGroup>
           </div>
-          <FormGroup controlId="customerOrder">
-            <ControlLabel>Order</ControlLabel>
-            <FormControl
-              required="true"
-              onChange={this.handleChange}
-              value={this.state.customerOrder}
-              placeholder="10 lbs - May '68"
-              bsSize="large"
-            />
-          </FormGroup>
+          <ControlLabel>Order</ControlLabel>
+          {customerOrder.map((val, i) => {
+            let orderId = `customerOrder[${i}]`;
+            return (
+              <div key={i}>
+                <FormGroup controlId={orderId}>
+                  <FormControl
+                    required={true}
+                    onChange={this.handleChange}
+                    name={orderId}
+                    data-id={i}
+                    id={orderId}
+                    value={this.val}
+                    placeholder="10 lbs - May '68"
+                    bsSize="large"
+                    className="name"
+                  />
+                </FormGroup>
+              </div>
+            );
+          })}
+          <Button bsStyle="primary" onClick={this.addCustomerOrder}>
+            Add
+          </Button>
           <FormGroup controlId="delivery">
             <ControlLabel>Delivery Type</ControlLabel>
             <FormControl
@@ -148,7 +177,7 @@ export default class NewOrder extends Component {
             <FormGroup controlId="initials">
               <ControlLabel>Employee Initials</ControlLabel>
               <FormControl
-                required="true"
+                required={true}
                 onChange={this.handleChange}
                 value={this.state.initials}
                 placeholder="JRL"
